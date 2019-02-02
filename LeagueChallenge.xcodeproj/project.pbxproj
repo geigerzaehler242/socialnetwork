@@ -16,6 +16,10 @@
 		ED2E6BB422051D6C00C26C85 /* LeagueChallengeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2E6BB322051D6C00C26C85 /* LeagueChallengeTests.swift */; };
 		ED2E6BBF22051D6C00C26C85 /* LeagueChallengeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2E6BBE22051D6C00C26C85 /* LeagueChallengeUITests.swift */; };
 		ED74589A22051EDD003AB249 /* APIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED74589922051EDD003AB249 /* APIController.swift */; };
+		ED7458A52205DCE0003AB249 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED7458A42205DCDF003AB249 /* Alamofire.framework */; };
+		ED7458A62205DCE0003AB249 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED7458A42205DCDF003AB249 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED7458A92205DCEF003AB249 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED7458A82205DCEE003AB249 /* AlamofireImage.framework */; };
+		ED7458AA2205DCEF003AB249 /* AlamofireImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED7458A82205DCEE003AB249 /* AlamofireImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +39,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		ED7458A72205DCE0003AB249 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ED7458A62205DCE0003AB249 /* Alamofire.framework in Embed Frameworks */,
+				ED7458AA2205DCEF003AB249 /* AlamofireImage.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		ED2E6B9822051D6A00C26C85 /* LeagueChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeagueChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED2E6B9B22051D6A00C26C85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +70,8 @@
 		ED2E6BBE22051D6C00C26C85 /* LeagueChallengeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeagueChallengeUITests.swift; sourceTree = "<group>"; };
 		ED2E6BC022051D6C00C26C85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED74589922051EDD003AB249 /* APIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIController.swift; sourceTree = "<group>"; };
+		ED7458A42205DCDF003AB249 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		ED7458A82205DCEE003AB249 /* AlamofireImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlamofireImage.framework; path = Carthage/Build/iOS/AlamofireImage.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +79,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED7458A52205DCE0003AB249 /* Alamofire.framework in Frameworks */,
+				ED7458A92205DCEF003AB249 /* AlamofireImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,10 +104,13 @@
 		ED2E6B8F22051D6A00C26C85 = {
 			isa = PBXGroup;
 			children = (
+				ED7458A82205DCEE003AB249 /* AlamofireImage.framework */,
+				ED7458A42205DCDF003AB249 /* Alamofire.framework */,
 				ED2E6B9A22051D6A00C26C85 /* LeagueChallenge */,
 				ED2E6BB222051D6C00C26C85 /* LeagueChallengeTests */,
 				ED2E6BBD22051D6C00C26C85 /* LeagueChallengeUITests */,
 				ED2E6B9922051D6A00C26C85 /* Products */,
+				ED74589B2205D8A7003AB249 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -131,6 +157,13 @@
 			path = LeagueChallengeUITests;
 			sourceTree = "<group>";
 		};
+		ED74589B2205D8A7003AB249 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -141,6 +174,7 @@
 				ED2E6B9422051D6A00C26C85 /* Sources */,
 				ED2E6B9522051D6A00C26C85 /* Frameworks */,
 				ED2E6B9622051D6A00C26C85 /* Resources */,
+				ED7458A72205DCE0003AB249 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -442,6 +476,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z79254QWB6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = LeagueChallenge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -460,6 +498,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z79254QWB6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = LeagueChallenge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
