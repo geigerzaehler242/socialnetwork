@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		ED2E6B9C22051D6A00C26C85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2E6B9B22051D6A00C26C85 /* AppDelegate.swift */; };
-		ED2E6B9E22051D6A00C26C85 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2E6B9D22051D6A00C26C85 /* ViewController.swift */; };
 		ED2E6BA122051D6A00C26C85 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED2E6B9F22051D6A00C26C85 /* Main.storyboard */; };
 		ED2E6BA422051D6A00C26C85 /* LeagueChallenge.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ED2E6BA222051D6A00C26C85 /* LeagueChallenge.xcdatamodeld */; };
 		ED2E6BA622051D6B00C26C85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED2E6BA522051D6B00C26C85 /* Assets.xcassets */; };
@@ -20,6 +19,8 @@
 		ED7458A62205DCE0003AB249 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED7458A42205DCDF003AB249 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ED7458A92205DCEF003AB249 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED7458A82205DCEE003AB249 /* AlamofireImage.framework */; };
 		ED7458AA2205DCEF003AB249 /* AlamofireImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED7458A82205DCEE003AB249 /* AlamofireImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED7458AC2205FA96003AB249 /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7458AB2205FA96003AB249 /* PostsTableViewCell.swift */; };
+		ED7458AE2205FAD3003AB249 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7458AD2205FAD3003AB249 /* HomeScreenViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +58,6 @@
 /* Begin PBXFileReference section */
 		ED2E6B9822051D6A00C26C85 /* LeagueChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeagueChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED2E6B9B22051D6A00C26C85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		ED2E6B9D22051D6A00C26C85 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		ED2E6BA022051D6A00C26C85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED2E6BA322051D6A00C26C85 /* LeagueChallenge.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LeagueChallenge.xcdatamodel; sourceTree = "<group>"; };
 		ED2E6BA522051D6B00C26C85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -72,6 +72,8 @@
 		ED74589922051EDD003AB249 /* APIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIController.swift; sourceTree = "<group>"; };
 		ED7458A42205DCDF003AB249 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		ED7458A82205DCEE003AB249 /* AlamofireImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlamofireImage.framework; path = Carthage/Build/iOS/AlamofireImage.framework; sourceTree = "<group>"; };
+		ED7458AB2205FA96003AB249 /* PostsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
+		ED7458AD2205FAD3003AB249 /* HomeScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,9 +130,10 @@
 			isa = PBXGroup;
 			children = (
 				ED2E6B9B22051D6A00C26C85 /* AppDelegate.swift */,
-				ED2E6B9D22051D6A00C26C85 /* ViewController.swift */,
 				ED74589922051EDD003AB249 /* APIController.swift */,
 				ED2E6B9F22051D6A00C26C85 /* Main.storyboard */,
+				ED7458AD2205FAD3003AB249 /* HomeScreenViewController.swift */,
+				ED7458AB2205FA96003AB249 /* PostsTableViewCell.swift */,
 				ED2E6BA522051D6B00C26C85 /* Assets.xcassets */,
 				ED2E6BA722051D6B00C26C85 /* LaunchScreen.storyboard */,
 				ED2E6BAA22051D6B00C26C85 /* Info.plist */,
@@ -297,9 +300,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED74589A22051EDD003AB249 /* APIController.swift in Sources */,
-				ED2E6B9E22051D6A00C26C85 /* ViewController.swift in Sources */,
+				ED7458AC2205FA96003AB249 /* PostsTableViewCell.swift in Sources */,
 				ED2E6BA422051D6A00C26C85 /* LeagueChallenge.xcdatamodeld in Sources */,
 				ED2E6B9C22051D6A00C26C85 /* AppDelegate.swift in Sources */,
+				ED7458AE2205FAD3003AB249 /* HomeScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

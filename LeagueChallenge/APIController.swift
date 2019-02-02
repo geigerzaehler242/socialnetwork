@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import AlamofireImage
 
 class APIController {
     static let user = "user"
@@ -15,6 +16,8 @@ class APIController {
     
     static let domain = "https://engineering.league.com/challenge/api/"
     let loginAPI = domain + "login"
+    let postsAPI = domain + "posts"
+    let usersAPI = domain + "users"
     
     static let shared = APIController()
     
@@ -56,4 +59,12 @@ class APIController {
                 completion(response.result.value, response.error)
         }
     }
+    
+    func fetchImage(url: URL, completion: @escaping (Any?, Error?) -> Void) {
+        Alamofire.request(url).responseImage { response in
+            
+            completion(response.result.value, response.error)
+        }
+    }
+    
 }
