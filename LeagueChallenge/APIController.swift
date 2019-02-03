@@ -11,6 +11,7 @@ import Alamofire
 import AlamofireImage
 
 class APIController {
+    
     static let user = "user"
     static let password = "password"
     

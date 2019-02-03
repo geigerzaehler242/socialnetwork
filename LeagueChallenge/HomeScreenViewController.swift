@@ -14,9 +14,6 @@ class HomeScreenViewController: UIViewController {
     @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
     
     private let refreshControl = UIRefreshControl()
-
-    var thePosts = [ [String:Any] ]() //posts model
-    var theUsers = [ [String:Any] ]() //users model
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,52 +36,60 @@ class HomeScreenViewController: UIViewController {
     }
     
     
+    @IBAction func didTapUsername(_ sender: UIButton) {
+   
+//        let cell = sender.superview as! UITableViewCell
+//        let indexPath = tableView.indexPathForCell(cell)
+        
+        performSegue(withIdentifier: "viewUserProfileSegue", sender: sender)
+        
+    }
+    
+    
+    
     @objc private func refreshPostsTable() {
         
         activitySpinner.startAnimating()
         
-        APIController.shared.fetchUserToken(userName: "", password: "") { (result, theError) in
-            
-            APIController.shared.request(url: URL(string: APIController.shared.postsAPI)!) { [unowned self] (postsResult, theError) in
-                
-                if let thePostsX = postsResult as? [ [String:Any] ] {
-                    self.thePosts = thePostsX
-                }
-                
-                APIController.shared.request(url: URL(string: APIController.shared.usersAPI)!) { [unowned self] (usersResult, theError) in
-                    
-                    if let theUsersX = usersResult as? [ [String:Any] ] {
-                        self.theUsers = theUsersX
-                    }
-                    
-                    self.activitySpinner.stopAnimating()
-                    self.refreshControl.endRefreshing()
-                    self.postsTableView.reloadData()
-                }
-            
-            }
+        Model.shared.updateModel() { (result, theError) in
+         
+            self.activitySpinner.stopAnimating()
+            self.refreshControl.endRefreshing()
+            self.postsTableView.reloadData()
             
         }
         
+
     }
     
 
-    /*
-    // MARK: - Navigation
+    
+    //MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
+        if let theSender = sender as? UIButton,
+            let destinationVC =  segue.destination as? ProfileViewController {
+            
+            destinationVC.postIndex = theSender.tag //selected post row
+            
+        }
+        
+        
     }
-    */
+    
 
 }
+
+//MARK: - Extension
 
 extension HomeScreenViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return thePosts.count
+        return Model.shared.thePosts.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -95,8 +100,8 @@ extension HomeScreenViewController : UITableViewDelegate, UITableViewDataSource 
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostsTableViewCell", for:indexPath) as! PostsTableViewCell
         
-            if let thePostUserId = self.thePosts[indexPath.row]["userId"] as? Int, thePostUserId > 0,
-            let thePostUserAvatar = self.theUsers[thePostUserId - 1]["avatar"] as? [String:Any],
+            if let thePostUserId = Model.shared.thePosts[indexPath.row]["userId"] as? Int, thePostUserId > 0,
+            let thePostUserAvatar = Model.shared.theUsers[thePostUserId - 1]["avatar"] as? [String:Any],
                 let thePostUserImageURLString = thePostUserAvatar["medium"] as? String {
                 
                 APIController.shared.fetchImage(url: URL(string: thePostUserImageURLString)! ){ /*[unowned self]*/ (imageResult, theError) in
@@ -114,16 +119,17 @@ extension HomeScreenViewController : UITableViewDelegate, UITableViewDataSource 
                 cell.postUserImage.image = nil //can set generic image in future
             }
             
-            if let thePostUserId = self.thePosts[indexPath.row]["userId"] as? Int, thePostUserId > 0,
-                let thePostUserName = self.theUsers[thePostUserId - 1]["name"] as? String {
+            if let thePostUserId = Model.shared.thePosts[indexPath.row]["userId"] as? Int, thePostUserId > 0,
+                let thePostUserName = Model.shared.theUsers[thePostUserId - 1]["name"] as? String {
         
-                cell.postUserName.text = thePostUserName
+                cell.postUserName.setTitle(thePostUserName, for: .normal)
+                cell.postUserName.tag = indexPath.row
             }
             else {
-                cell.postUserName.text = ""
+                cell.postUserName.setTitle("", for: .normal)
             }
             
-            if let thePostTitle = self.thePosts[indexPath.row]["title"] as? String {
+            if let thePostTitle = Model.shared.thePosts[indexPath.row]["title"] as? String {
                 
                 cell.postTitle.text = thePostTitle
             }
@@ -131,7 +137,7 @@ extension HomeScreenViewController : UITableViewDelegate, UITableViewDataSource 
                 cell.postTitle.text = ""
             }
             
-            if let thePostBody = self.thePosts[indexPath.row]["body"] as? String {
+            if let thePostBody = Model.shared.thePosts[indexPath.row]["body"] as? String {
                 
                 cell.postText.text = thePostBody
             }
