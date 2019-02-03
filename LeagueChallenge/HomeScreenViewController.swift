@@ -76,9 +76,11 @@ class HomeScreenViewController: UIViewController {
             
             destinationVC.postIndex = theSender.tag //selected post row
             
+            if let thePostUserId = Model.shared.thePosts[theSender.tag]["userId"] as? Int, thePostUserId > 0 {
+             
+                destinationVC.postUserId = thePostUserId
+            }
         }
-        
-        
     }
     
 

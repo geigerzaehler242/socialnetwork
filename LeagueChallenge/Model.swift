@@ -18,9 +18,10 @@ class Model {
     var thePosts = [ [String:Any] ]() //posts model
     var theUsers = [ [String:Any] ]() //users model
     
+    var userAlbum = [ [String:Any] ]() //album model
+    var albumPhotos = [ [String:Any] ]() //photos model
     
     func updateModel( completion: @escaping (String?, Error?) -> Void) {
-        
         
         APIController.shared.fetchUserToken(userName: "", password: "") { (result, theError) in
             
@@ -38,16 +39,43 @@ class Model {
                     
                     completion("updated", nil)
                 }
+            }
+        }
+    }
+    
+    
+    func updateAlbum( userID: Int, completion: @escaping (String?, Error?) -> Void) {
+    
+        let urlString = APIController.shared.userAlbum + "?userId=" + String(userID)
+        
+        APIController.shared.request(url: URL(string: urlString)!) { [unowned self] (albumsResult, theError) in
+        
+            if let theAlbumList = albumsResult as? [ [String:Any] ] {
+            
+                self.userAlbum = theAlbumList
                 
+                completion("updated", nil)
+            }
+            
+        }
+    
+    }
+    
+    func updatePhotos( albumID: Int, completion: @escaping (String?, Error?) -> Void) {
+        
+        let urlString = APIController.shared.userAlbum + "?albumId=" + String(albumID)
+        
+        APIController.shared.request(url: URL(string: urlString)!) { [unowned self] (albumsResult, theError) in
+            
+            if let theAlbumPhotoList = albumsResult as? [ [String:Any] ] {
+                
+                self.albumPhotos = theAlbumPhotoList
+                
+                completion("updated", nil)
             }
             
         }
         
-        
-        
-        
     }
-    
-    
     
 }

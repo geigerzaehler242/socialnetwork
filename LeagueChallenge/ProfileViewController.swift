@@ -22,7 +22,22 @@ class ProfileViewController: UIViewController {
     
     @IBOutlet weak var innerFrame: UIView!
     
+    @IBOutlet weak var albumCollectionView: UICollectionView!
+    
+    
     var postIndex = 0
+    
+    var postUserId: Int = 0 {
+        
+        didSet {
+            
+            Model.shared.updateAlbum(userID: postUserId) { [unowned self] (imageResult, theError) in
+
+                self.albumCollectionView.reloadData()
+            }
+        }
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,13 +101,6 @@ class ProfileViewController: UIViewController {
         if let thePostUserId = Model.shared.thePosts[postIndex]["userId"] as? Int, thePostUserId > 0,
             let thePostUserUrl = Model.shared.theUsers[thePostUserId - 1]["website"] as? String {
             
-        
-//            let attributedString = NSMutableAttributedString(string: thePostUserUrl)
-//            attributedString.addAttribute(.link, value: thePostUserUrl, range: NSRange(location: 0, length: thePostUserUrl.count))
-//            attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: thePostUserUrl.count))
-//
-//
-//            userUrl.attributedText = attributedString
            userUrl.text = thePostUserUrl
             
         }
@@ -118,10 +126,30 @@ class ProfileViewController: UIViewController {
 
 }
 
-//extension ProfileViewController : UITextViewDelegate {
-//    
-//    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-//        UIApplication.shared.open(URL, options: [:])
-//        return false
-//    }
-//}
+extension ProfileViewController : UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return Model.shared.userAlbum.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCollectionViewCell", for: indexPath) as! AlbumCollectionViewCell
+        
+        if Model.shared.userAlbum.count > 0, let albumTitle = Model.shared.userAlbum[indexPath.row]["title"] as? String {
+            cell.title.text = albumTitle
+        }
+        else {
+            cell.title.text = ""
+        }
+        
+        cell.backgroundColor = UIColor(displayP3Red: CGFloat.random(in: 0 ... 1), green: CGFloat.random(in: 0 ... 1), blue: CGFloat.random(in: 0 ... 1), alpha: 1.0)
+        
+        
+        return cell
+    }
+    
+    
+    
+}

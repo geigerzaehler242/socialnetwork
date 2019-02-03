@@ -23,6 +23,7 @@
 		ED7458AE2205FAD3003AB249 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7458AD2205FAD3003AB249 /* HomeScreenViewController.swift */; };
 		ED7458B022064684003AB249 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7458AF22064684003AB249 /* ProfileViewController.swift */; };
 		ED7458B222065B30003AB249 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7458B122065B30003AB249 /* Model.swift */; };
+		ED7458B622072B3A003AB249 /* AlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7458B522072B3A003AB249 /* AlbumCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,7 @@
 		ED7458AD2205FAD3003AB249 /* HomeScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewController.swift; sourceTree = "<group>"; };
 		ED7458AF22064684003AB249 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		ED7458B122065B30003AB249 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		ED7458B522072B3A003AB249 /* AlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 				ED7458B122065B30003AB249 /* Model.swift */,
 				ED7458AF22064684003AB249 /* ProfileViewController.swift */,
 				ED7458AB2205FA96003AB249 /* PostsTableViewCell.swift */,
+				ED7458B522072B3A003AB249 /* AlbumCollectionViewCell.swift */,
 				ED2E6BA522051D6B00C26C85 /* Assets.xcassets */,
 				ED2E6BA722051D6B00C26C85 /* LaunchScreen.storyboard */,
 				ED2E6BAA22051D6B00C26C85 /* Info.plist */,
@@ -305,6 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED7458B622072B3A003AB249 /* AlbumCollectionViewCell.swift in Sources */,
 				ED7458B222065B30003AB249 /* Model.swift in Sources */,
 				ED7458B022064684003AB249 /* ProfileViewController.swift in Sources */,
 				ED74589A22051EDD003AB249 /* APIController.swift in Sources */,

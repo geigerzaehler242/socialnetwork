@@ -19,6 +19,8 @@ class APIController {
     let loginAPI = domain + "login"
     let postsAPI = domain + "posts"
     let usersAPI = domain + "users"
+    let userAlbum = domain + "albums"
+    let userPhotos = domain + "photos"
     
     static let shared = APIController()
     
@@ -60,6 +62,20 @@ class APIController {
                 completion(response.result.value, response.error)
         }
     }
+    
+//    func requestX(url: URL, completion: @escaping (Any?, Error?) -> Int) {
+//        guard let userToken = userToken else {
+//            NSLog("No user token set")
+//            completion(nil, nil)
+//            return
+//        }
+//        let authHeader: HTTPHeaders = ["x-access-token" : userToken]
+//        
+//        Alamofire.request(url, method: .get
+//            , parameters: nil, encoding: URLEncoding.default, headers: authHeader).responseJSON { (response) in
+//                completion(response.result.value, response.error)
+//        }
+//    }
     
     func fetchImage(url: URL, completion: @escaping (Any?, Error?) -> Void) {
         Alamofire.request(url).responseImage { response in
