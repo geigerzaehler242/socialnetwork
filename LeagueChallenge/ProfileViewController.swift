@@ -25,6 +25,18 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var albumCollectionView: UICollectionView!
     
     
+    @IBOutlet weak var shadeView: UIView!
+    
+    @IBOutlet weak var photoImage: UIImageView!
+    
+    @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
+    
+    var tapGesture = UITapGestureRecognizer()
+    var swipeGestureLeft = UISwipeGestureRecognizer()
+    var swipeGestureRight = UISwipeGestureRecognizer()
+    
+    var photoIndex = 0
+    
     var postIndex = 0
     
     var postUserId: Int = 0 {
@@ -47,7 +59,6 @@ class ProfileViewController: UIViewController {
         navigationController?.visibleViewController?.title = "User Profile"
         
         innerFrame.layer.cornerRadius = 20
-        
         
         if let thePostUserId = Model.shared.thePosts[postIndex]["userId"] as? Int, thePostUserId > 0,
             let thePostUserAvatar = Model.shared.theUsers[thePostUserId - 1]["avatar"] as? [String:Any],
@@ -109,7 +120,86 @@ class ProfileViewController: UIViewController {
         }
         
         
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(myviewTapped(_:)))
+        tapGesture.numberOfTapsRequired = 1
+        tapGesture.numberOfTouchesRequired = 1
         
+        shadeView.addGestureRecognizer(tapGesture)
+        
+        swipeGestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(myviewSwippedLeft(_:)))
+        swipeGestureLeft.direction = .left
+        shadeView.addGestureRecognizer(swipeGestureLeft)
+        
+        swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(myviewSwippedRight(_:)))
+        swipeGestureRight.direction = .right
+        shadeView.addGestureRecognizer(swipeGestureRight)
+    }
+    
+    @objc func myviewTapped(_ sender: UITapGestureRecognizer) {
+        
+        shadeView.isHidden = true
+        photoImage.isHidden = true
+    }
+    
+    @objc func myviewSwippedRight(_ sender: UISwipeGestureRecognizer) {
+        
+        if sender.state == .ended {
+            
+            if sender.direction == .right {
+                
+                if photoIndex > 0 {
+                    photoIndex -= 1
+                }
+                
+                refreshPhoto()
+            }
+            
+        }
+        
+    }
+    
+    @objc func myviewSwippedLeft(_ sender: UISwipeGestureRecognizer) {
+        
+        if sender.state == .ended {
+            
+            if sender.direction == .left {
+                
+                photoIndex += 1
+                
+                refreshPhoto()
+                
+            }
+            else {
+                
+                if photoIndex > 0 {
+                   photoIndex -= 1
+                }
+                
+                refreshPhoto()
+            }
+        }
+        
+    }
+    
+    func refreshPhoto() {
+        
+        if let thePhotoUrlString = Model.shared.albumPhotos[photoIndex]["url"] as? String {
+            
+            APIController.shared.fetchImage(url: URL(string: thePhotoUrlString)! ){ [unowned self] (imageResult, theError) in
+                
+                if let thePhotoImage = imageResult as? UIImage {
+                    
+                    DispatchQueue.main.async {
+                        self.photoImage.image = thePhotoImage
+                    }
+                }
+            }
+        }
+        else {
+            DispatchQueue.main.async {
+                self.photoImage.image = nil //can set generic image in future
+            }
+        }
         
     }
     
@@ -135,6 +225,11 @@ extension ProfileViewController : UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        
+        //since the API doesn't seem to allow to download only one photo then just show album title on the cell
+        //otherwise downloading full photo collections to just show the first photo image on each cell is a
+        //potential huge bandwidth issue.
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCollectionViewCell", for: indexPath) as! AlbumCollectionViewCell
         
         if Model.shared.userAlbum.count > 0, let albumTitle = Model.shared.userAlbum[indexPath.row]["title"] as? String {
@@ -150,6 +245,44 @@ extension ProfileViewController : UICollectionViewDelegate, UICollectionViewData
         return cell
     }
     
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        photoIndex = 0
+        
+        shadeView.isHidden = false
+        photoImage.isHidden = false
+        self.activitySpinner.startAnimating()
+        
+        if let theAlbumId = Model.shared.userAlbum[0]["id"] as? Int {
+            
+            Model.shared.updatePhotos( albumID: theAlbumId) { [unowned self] (updateResult, theError) in
+                
+                self.activitySpinner.stopAnimating()
+                
+                if let thePhotoUrlString = Model.shared.albumPhotos[self.photoIndex]["url"] as? String {
+                
+                    APIController.shared.fetchImage(url: URL(string: thePhotoUrlString)! ){ [unowned self] (imageResult, theError) in
+                        
+                        if let thePhotoImage = imageResult as? UIImage {
+                            
+                            DispatchQueue.main.async {
+                                self.photoImage.image = thePhotoImage
+                            }
+                        }
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        self.photoImage.image = nil //can set generic image in future
+                    }
+                }
+            }
+        }
+        else {
+            photoImage.image = nil //can set generic image in future
+        }
+    }
     
     
 }

@@ -63,7 +63,7 @@ class Model {
     
     func updatePhotos( albumID: Int, completion: @escaping (String?, Error?) -> Void) {
         
-        let urlString = APIController.shared.userAlbum + "?albumId=" + String(albumID)
+        let urlString = APIController.shared.userPhotos + "?albumId=" + String(albumID)
         
         APIController.shared.request(url: URL(string: urlString)!) { [unowned self] (albumsResult, theError) in
             

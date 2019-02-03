@@ -116,7 +116,7 @@
         <!--Profile View Controller-->
         <scene sceneID="GP7-ta-0Yz">
             <objects>
-                <viewController id="DEu-dH-6uv" customClass="ProfileViewController" customModule="LeagueChallenge" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" id="DEu-dH-6uv" customClass="ProfileViewController" customModule="LeagueChallenge" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gXN-zJ-MyY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -256,23 +256,47 @@
                                     <outlet property="delegate" destination="DEu-dH-6uv" id="6W1-kH-Doy"/>
                                 </connections>
                             </collectionView>
+                            <view hidden="YES" alpha="0.80000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LWE-4i-8NM">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="pUS-mQ-ud5">
+                                        <rect key="frame" x="169" y="315" width="37" height="37"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pde-SZ-3Hd">
+                                <rect key="frame" x="0.0" y="183" width="375" height="301.5"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="4rU-iu-LYe" firstAttribute="bottom" secondItem="CsN-zN-B3V" secondAttribute="bottom" id="0i5-nE-fcc"/>
                             <constraint firstItem="gBn-bH-XF7" firstAttribute="top" secondItem="4rU-iu-LYe" secondAttribute="top" id="ADm-FM-qKH"/>
+                            <constraint firstItem="pde-SZ-3Hd" firstAttribute="leading" secondItem="4rU-iu-LYe" secondAttribute="leading" id="MfO-jS-hRO"/>
+                            <constraint firstItem="4rU-iu-LYe" firstAttribute="bottom" secondItem="LWE-4i-8NM" secondAttribute="bottom" id="Toi-op-vBu"/>
+                            <constraint firstItem="LWE-4i-8NM" firstAttribute="trailing" secondItem="4rU-iu-LYe" secondAttribute="trailing" id="Uf9-7b-7gn"/>
                             <constraint firstItem="CsN-zN-B3V" firstAttribute="height" secondItem="gBn-bH-XF7" secondAttribute="height" id="VP5-nd-6dv"/>
+                            <constraint firstItem="4rU-iu-LYe" firstAttribute="trailing" secondItem="pde-SZ-3Hd" secondAttribute="trailing" id="WDU-UR-TOg"/>
                             <constraint firstAttribute="trailing" secondItem="gBn-bH-XF7" secondAttribute="trailing" id="blg-tw-TyO"/>
+                            <constraint firstItem="pde-SZ-3Hd" firstAttribute="height" secondItem="gBn-bH-XF7" secondAttribute="height" id="eq3-QH-Rl6"/>
                             <constraint firstItem="CsN-zN-B3V" firstAttribute="top" secondItem="gBn-bH-XF7" secondAttribute="bottom" id="ezB-t3-g88"/>
                             <constraint firstItem="gBn-bH-XF7" firstAttribute="leading" secondItem="gXN-zJ-MyY" secondAttribute="leading" id="gCu-7r-nhy"/>
+                            <constraint firstItem="pde-SZ-3Hd" firstAttribute="centerY" secondItem="gXN-zJ-MyY" secondAttribute="centerY" id="kjz-9i-3SF"/>
                             <constraint firstItem="CsN-zN-B3V" firstAttribute="trailing" secondItem="4rU-iu-LYe" secondAttribute="trailing" id="sR1-lm-PnP"/>
+                            <constraint firstItem="LWE-4i-8NM" firstAttribute="top" secondItem="gXN-zJ-MyY" secondAttribute="top" id="vkP-Qd-BdY"/>
                             <constraint firstItem="CsN-zN-B3V" firstAttribute="leading" secondItem="4rU-iu-LYe" secondAttribute="leading" id="xmd-5j-Nee"/>
+                            <constraint firstItem="LWE-4i-8NM" firstAttribute="leading" secondItem="gXN-zJ-MyY" secondAttribute="leading" id="zuU-8U-kNp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4rU-iu-LYe"/>
                     </view>
                     <connections>
+                        <outlet property="activitySpinner" destination="pUS-mQ-ud5" id="ruq-Yz-xbZ"/>
                         <outlet property="albumCollectionView" destination="CsN-zN-B3V" id="ZNd-ge-i8W"/>
                         <outlet property="innerFrame" destination="77w-Xb-7KU" id="xBX-sK-GL5"/>
+                        <outlet property="photoImage" destination="pde-SZ-3Hd" id="TmH-Tj-TM6"/>
+                        <outlet property="shadeView" destination="LWE-4i-8NM" id="t3A-kw-9Ez"/>
                         <outlet property="userEmail" destination="PHY-Mj-F0x" id="gSM-4w-c39"/>
                         <outlet property="userImage" destination="3oG-mx-QU3" id="ac5-ml-dCR"/>
                         <outlet property="userName" destination="kkN-cw-L9d" id="M0C-pS-PIz"/>

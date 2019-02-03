@@ -37,9 +37,6 @@ class HomeScreenViewController: UIViewController {
     
     
     @IBAction func didTapUsername(_ sender: UIButton) {
-   
-//        let cell = sender.superview as! UITableViewCell
-//        let indexPath = tableView.indexPathForCell(cell)
         
         performSegue(withIdentifier: "viewUserProfileSegue", sender: sender)
         
@@ -150,11 +147,5 @@ extension HomeScreenViewController : UITableViewDelegate, UITableViewDataSource 
         return cell
         
     }
-    
-    
-    
-    
-    
-    
     
 }
