@@ -1,8 +1,8 @@
 //
-//  LeagueChallengeTests.swift
-//  LeagueChallengeTests
+//  CoreDataLeagueChallengeTests.swift
+//  CoreDataLeagueChallengeTests
 //
-//  Created by fernando marto on 2019-02-01.
+//  Created by fernando marto on 2019-02-04.
 //  Copyright © 2019 f. All rights reserved.
 //
 
@@ -11,18 +11,21 @@ import XCTest
 
 var model: Model!
 
-class LeagueChallengeTests: XCTestCase {
+class CoreDataLeagueChallengeTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        
         super.setUp()
         model = Model()
+        
+        model.getPosts()
+        model.getUsers()
+        model.getAlbums()
+        
     }
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        
         super.tearDown()
         model = nil
     }
@@ -31,26 +34,13 @@ class LeagueChallengeTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
-        let promise = expectation(description: "model update failed")
+        let postCount = model.posts.count
+        let usersCount = model.users.count
+        let albumsCount = model.albums.count
         
-        model.updateModel() { (response, error) in
-            
-            if let error = error {
-                XCTFail("Error: \(error.localizedDescription)")
-                return
-            }
-            else if let statusCode = response {
-                if statusCode == "updated" {
-                    promise.fulfill()
-                }
-                else {
-                    XCTFail("Status code:\(statusCode)")
-                }
-            }
-        }
-        
-        waitForExpectations(timeout: 5, handler: nil)
-        
+        XCTAssertEqual(postCount, 4300, "post count is wrong") //500
+        XCTAssertEqual(usersCount, 420, "users count is wrong") //50
+        XCTAssertEqual(albumsCount, 2600, "album count is wrong") //200
     }
 
     func testPerformanceExample() {

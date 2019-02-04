@@ -24,6 +24,7 @@
 		ED7458B022064684003AB249 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7458AF22064684003AB249 /* ProfileViewController.swift */; };
 		ED7458B222065B30003AB249 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7458B122065B30003AB249 /* Model.swift */; };
 		ED7458B622072B3A003AB249 /* AlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7458B522072B3A003AB249 /* AlbumCollectionViewCell.swift */; };
+		ED7458BE2209008C003AB249 /* CoreDataLeagueChallengeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7458BD2209008C003AB249 /* CoreDataLeagueChallengeTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,13 @@
 			remoteInfo = LeagueChallenge;
 		};
 		ED2E6BBB22051D6C00C26C85 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED2E6B9022051D6A00C26C85 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED2E6B9722051D6A00C26C85;
+			remoteInfo = LeagueChallenge;
+		};
+		ED7458C02209008C003AB249 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ED2E6B9022051D6A00C26C85 /* Project object */;
 			proxyType = 1;
@@ -80,6 +88,9 @@
 		ED7458AF22064684003AB249 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		ED7458B122065B30003AB249 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		ED7458B522072B3A003AB249 /* AlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCollectionViewCell.swift; sourceTree = "<group>"; };
+		ED7458BB2209008C003AB249 /* CoreDataLeagueChallengeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreDataLeagueChallengeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED7458BD2209008C003AB249 /* CoreDataLeagueChallengeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataLeagueChallengeTests.swift; sourceTree = "<group>"; };
+		ED7458BF2209008C003AB249 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +117,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ED7458B82209008C003AB249 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -117,6 +135,7 @@
 				ED2E6B9A22051D6A00C26C85 /* LeagueChallenge */,
 				ED2E6BB222051D6C00C26C85 /* LeagueChallengeTests */,
 				ED2E6BBD22051D6C00C26C85 /* LeagueChallengeUITests */,
+				ED7458BC2209008C003AB249 /* CoreDataLeagueChallengeTests */,
 				ED2E6B9922051D6A00C26C85 /* Products */,
 				ED74589B2205D8A7003AB249 /* Frameworks */,
 			);
@@ -128,6 +147,7 @@
 				ED2E6B9822051D6A00C26C85 /* LeagueChallenge.app */,
 				ED2E6BAF22051D6C00C26C85 /* LeagueChallengeTests.xctest */,
 				ED2E6BBA22051D6C00C26C85 /* LeagueChallengeUITests.xctest */,
+				ED7458BB2209008C003AB249 /* CoreDataLeagueChallengeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -174,6 +194,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ED7458BC2209008C003AB249 /* CoreDataLeagueChallengeTests */ = {
+			isa = PBXGroup;
+			children = (
+				ED7458BD2209008C003AB249 /* CoreDataLeagueChallengeTests.swift */,
+				ED7458BF2209008C003AB249 /* Info.plist */,
+			);
+			path = CoreDataLeagueChallengeTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,6 +262,24 @@
 			productReference = ED2E6BBA22051D6C00C26C85 /* LeagueChallengeUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		ED7458BA2209008C003AB249 /* CoreDataLeagueChallengeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED7458C22209008C003AB249 /* Build configuration list for PBXNativeTarget "CoreDataLeagueChallengeTests" */;
+			buildPhases = (
+				ED7458B72209008C003AB249 /* Sources */,
+				ED7458B82209008C003AB249 /* Frameworks */,
+				ED7458B92209008C003AB249 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ED7458C12209008C003AB249 /* PBXTargetDependency */,
+			);
+			name = CoreDataLeagueChallengeTests;
+			productName = CoreDataLeagueChallengeTests;
+			productReference = ED7458BB2209008C003AB249 /* CoreDataLeagueChallengeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -254,6 +301,10 @@
 						CreatedOnToolsVersion = 10.1;
 						TestTargetID = ED2E6B9722051D6A00C26C85;
 					};
+					ED7458BA2209008C003AB249 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = ED2E6B9722051D6A00C26C85;
+					};
 				};
 			};
 			buildConfigurationList = ED2E6B9322051D6A00C26C85 /* Build configuration list for PBXProject "LeagueChallenge" */;
@@ -272,6 +323,7 @@
 				ED2E6B9722051D6A00C26C85 /* LeagueChallenge */,
 				ED2E6BAE22051D6C00C26C85 /* LeagueChallengeTests */,
 				ED2E6BB922051D6C00C26C85 /* LeagueChallengeUITests */,
+				ED7458BA2209008C003AB249 /* CoreDataLeagueChallengeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -295,6 +347,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		ED2E6BB822051D6C00C26C85 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED7458B92209008C003AB249 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -335,6 +394,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ED7458B72209008C003AB249 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED7458BE2209008C003AB249 /* CoreDataLeagueChallengeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -347,6 +414,11 @@
 			isa = PBXTargetDependency;
 			target = ED2E6B9722051D6A00C26C85 /* LeagueChallenge */;
 			targetProxy = ED2E6BBB22051D6C00C26C85 /* PBXContainerItemProxy */;
+		};
+		ED7458C12209008C003AB249 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED2E6B9722051D6A00C26C85 /* LeagueChallenge */;
+			targetProxy = ED7458C02209008C003AB249 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -612,6 +684,46 @@
 			};
 			name = Release;
 		};
+		ED7458C32209008C003AB249 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z79254QWB6;
+				INFOPLIST_FILE = CoreDataLeagueChallengeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = f.CoreDataLeagueChallengeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LeagueChallenge.app/LeagueChallenge";
+			};
+			name = Debug;
+		};
+		ED7458C42209008C003AB249 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z79254QWB6;
+				INFOPLIST_FILE = CoreDataLeagueChallengeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = f.CoreDataLeagueChallengeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LeagueChallenge.app/LeagueChallenge";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -647,6 +759,15 @@
 			buildConfigurations = (
 				ED2E6BCA22051D6C00C26C85 /* Debug */,
 				ED2E6BCB22051D6C00C26C85 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ED7458C22209008C003AB249 /* Build configuration list for PBXNativeTarget "CoreDataLeagueChallengeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED7458C32209008C003AB249 /* Debug */,
+				ED7458C42209008C003AB249 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
