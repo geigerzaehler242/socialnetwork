@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class HomeScreenViewController: UIViewController {
     
@@ -14,6 +15,8 @@ class HomeScreenViewController: UIViewController {
     @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
     
     private let refreshControl = UIRefreshControl()
+    
+    private let networkManager = NetworkReachabilityManager(host:"www.apple.com")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,12 +47,25 @@ class HomeScreenViewController: UIViewController {
         
     }
     
+    func isNetworkReachable() -> Bool {
+        
+        return networkManager?.isReachable ?? false
+    }
+    
     @objc private func refreshPostsTable() {
         
         activitySpinner.startAnimating()
         
-        Model.shared.updateModel() { (result, theError) in
-         
+        if isNetworkReachable() {
+        
+            Model.shared.updateModel() { (result, theError) in
+             
+                self.activitySpinner.stopAnimating()
+                self.refreshControl.endRefreshing()
+                self.postsTableView.reloadData()
+            }
+        }
+        else {
             self.activitySpinner.stopAnimating()
             self.refreshControl.endRefreshing()
             self.postsTableView.reloadData()
@@ -88,7 +104,7 @@ extension HomeScreenViewController : UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if Model.shared.posts.count == 0 || Model.shared.thePosts.count == 0 {
+        if Model.shared.posts.count == 0 {
             return 0
         }
         else {
