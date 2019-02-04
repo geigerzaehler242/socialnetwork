@@ -20,6 +20,10 @@ class HomeScreenViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
+        Model.shared.getUsers() //get models from core data
+        Model.shared.getPosts()
+        Model.shared.getAlbums()
+        
         postsTableView.refreshControl = refreshControl
         
         refreshControl.addTarget(self, action: #selector(refreshPostsTable), for: .valueChanged)
@@ -32,17 +36,13 @@ class HomeScreenViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     
-        
     }
-    
     
     @IBAction func didTapUsername(_ sender: UIButton) {
         
         performSegue(withIdentifier: "viewUserProfileSegue", sender: sender)
         
     }
-    
-    
     
     @objc private func refreshPostsTable() {
         
@@ -53,10 +53,7 @@ class HomeScreenViewController: UIViewController {
             self.activitySpinner.stopAnimating()
             self.refreshControl.endRefreshing()
             self.postsTableView.reloadData()
-            
         }
-        
-
     }
     
 
@@ -73,10 +70,12 @@ class HomeScreenViewController: UIViewController {
             
             destinationVC.postIndex = theSender.tag //selected post row
             
-            if let thePostUserId = Model.shared.thePosts[theSender.tag]["userId"] as? Int, thePostUserId > 0 {
-             
+            let post = Model.shared.posts[theSender.tag]
+            if let thePostUserId = post.value(forKeyPath: "userId") as? Int, thePostUserId > 0 {
+                
                 destinationVC.postUserId = thePostUserId
             }
+            
         }
     }
     
@@ -88,7 +87,13 @@ class HomeScreenViewController: UIViewController {
 extension HomeScreenViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Model.shared.thePosts.count
+        
+        if Model.shared.posts.count == 0 || Model.shared.thePosts.count == 0 {
+            return 0
+        }
+        else {
+            return Model.shared.posts.count
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -98,51 +103,54 @@ extension HomeScreenViewController : UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostsTableViewCell", for:indexPath) as! PostsTableViewCell
+
+        let post = Model.shared.posts[indexPath.row]
         
-            if let thePostUserId = Model.shared.thePosts[indexPath.row]["userId"] as? Int, thePostUserId > 0,
-            let thePostUserAvatar = Model.shared.theUsers[thePostUserId - 1]["avatar"] as? [String:Any],
-                let thePostUserImageURLString = thePostUserAvatar["medium"] as? String {
+        if let thePostUserId = post.value(forKeyPath: "userId") as? Int, thePostUserId > 0 {
+        
+            let thePostUserImageURLString = Model.shared.getUserImageUrl(id: thePostUserId)
+            
+            APIController.shared.fetchImage(url: URL(string: thePostUserImageURLString)! ){ /*[unowned self]*/ (imageResult, theError) in
                 
-                APIController.shared.fetchImage(url: URL(string: thePostUserImageURLString)! ){ /*[unowned self]*/ (imageResult, theError) in
+                if let theUserImage = imageResult as? UIImage {
                     
-                    if let theUserImage = imageResult as? UIImage {
-                        
-                        DispatchQueue.main.async {
-                            cell.postUserImage.image = theUserImage.af_imageRoundedIntoCircle()
-                        }
+                    DispatchQueue.main.async {
+                        cell.postUserImage.image = theUserImage.af_imageRoundedIntoCircle()
                     }
                 }
-                
-            }
-            else {
-                cell.postUserImage.image = nil //can set generic image in future
             }
             
-            if let thePostUserId = Model.shared.thePosts[indexPath.row]["userId"] as? Int, thePostUserId > 0,
-                let thePostUserName = Model.shared.theUsers[thePostUserId - 1]["name"] as? String {
+        }
+        else {
+            cell.postUserImage.image = nil //can set generic image in future
+        }
         
-                cell.postUserName.setTitle(thePostUserName, for: .normal)
-                cell.postUserName.tag = indexPath.row
-            }
-            else {
-                cell.postUserName.setTitle("", for: .normal)
-            }
+        if let thePostUserId = post.value(forKeyPath: "userId") as? Int, thePostUserId > 0 {
+        
+            let thePostUserName = Model.shared.getUserName(id: thePostUserId)
+           
+            cell.postUserName.setTitle(thePostUserName, for: .normal)
+            cell.postUserName.tag = indexPath.row
+        }
+        else {
+            cell.postUserName.setTitle("", for: .normal)
+        }
+        
+        if let thePostTitle = post.value(forKeyPath: "title") as? String {
             
-            if let thePostTitle = Model.shared.thePosts[indexPath.row]["title"] as? String {
-                
-                cell.postTitle.text = thePostTitle
-            }
-            else {
-                cell.postTitle.text = ""
-            }
+            cell.postTitle.text = thePostTitle
+        }
+        else {
+            cell.postTitle.text = ""
+        }
+        
+        if let thePostBody = post.value(forKeyPath: "body") as? String {
             
-            if let thePostBody = Model.shared.thePosts[indexPath.row]["body"] as? String {
-                
-                cell.postText.text = thePostBody
-            }
-            else {
-                cell.postText.text = ""
-            }
+            cell.postText.text = thePostBody
+        }
+        else {
+            cell.postText.text = ""
+        }
         
         return cell
         

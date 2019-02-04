@@ -59,65 +59,37 @@ class ProfileViewController: UIViewController {
         navigationController?.visibleViewController?.title = "User Profile"
         
         innerFrame.layer.cornerRadius = 20
-        
-        if let thePostUserId = Model.shared.thePosts[postIndex]["userId"] as? Int, thePostUserId > 0,
-            let thePostUserAvatar = Model.shared.theUsers[thePostUserId - 1]["avatar"] as? [String:Any],
-            let thePostUserImageURLString = thePostUserAvatar["medium"] as? String {
             
-            APIController.shared.fetchImage(url: URL(string: thePostUserImageURLString)! ){ [unowned self] (imageResult, theError) in
+        let thePostUserImageURLString = Model.shared.getUserImageUrl(id: postUserId)
+        
+        APIController.shared.fetchImage(url: URL(string: thePostUserImageURLString)! ){ [unowned self] (imageResult, theError) in
+            
+            if let theUserImage = imageResult as? UIImage {
                 
-                if let theUserImage = imageResult as? UIImage {
-                    
-                    DispatchQueue.main.async {
-                        self.userImage.image = theUserImage.af_imageRoundedIntoCircle()
-                    }
+                DispatchQueue.main.async {
+                    self.userImage.image = theUserImage.af_imageRoundedIntoCircle()
                 }
             }
+            else {
+                self.userImage.image = nil //can set generic image in future
+            }
+        }
             
-        }
-        else {
-            userImage.image = nil //can set generic image in future
-        }
+        let thePostUserName = Model.shared.getUserName(id: postUserId)
         
-        if let thePostUserId = Model.shared.thePosts[postIndex]["userId"] as? Int, thePostUserId > 0,
-            let thePostUserName = Model.shared.theUsers[thePostUserId - 1]["name"] as? String {
+        userName.text = thePostUserName
             
-            userName.text = thePostUserName
-            
-        }
-        else {
-            userName.text = ""
-        }
+        let thePostUserEmail = Model.shared.getUserEmail(id: postUserId)
         
-        if let thePostUserId = Model.shared.thePosts[postIndex]["userId"] as? Int, thePostUserId > 0,
-            let thePostUserEmail = Model.shared.theUsers[thePostUserId - 1]["email"] as? String {
+        userEmail.text = thePostUserEmail
             
-            userEmail.text = thePostUserEmail
-            
-        }
-        else {
-            userEmail.text = ""
-        }
+        let thePostUserPhone = Model.shared.getUserPhone(id: postUserId)
         
-        if let thePostUserId = Model.shared.thePosts[postIndex]["userId"] as? Int, thePostUserId > 0,
-            let thePostUserPhone = Model.shared.theUsers[thePostUserId - 1]["phone"] as? String {
+        userPhone.text = thePostUserPhone
             
-            userPhone.text = thePostUserPhone
-            
-        }
-        else {
-            userPhone.text = ""
-        }
-        
-        if let thePostUserId = Model.shared.thePosts[postIndex]["userId"] as? Int, thePostUserId > 0,
-            let thePostUserUrl = Model.shared.theUsers[thePostUserId - 1]["website"] as? String {
-            
-           userUrl.text = thePostUserUrl
-            
-        }
-        else {
-            userUrl.text = ""
-        }
+        let thePostUserUrl = Model.shared.getUserWebsite(id: postUserId)
+     
+        userUrl.text = thePostUserUrl
         
         
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(myviewTapped(_:)))
@@ -220,7 +192,12 @@ extension ProfileViewController : UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return Model.shared.userAlbum.count
+        if Model.shared.albums.count == 0 || Model.shared.userAlbum.count == 0 {
+            return 0
+        }
+        else {
+            return Model.shared.albums.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -232,8 +209,14 @@ extension ProfileViewController : UICollectionViewDelegate, UICollectionViewData
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCollectionViewCell", for: indexPath) as! AlbumCollectionViewCell
         
-        if Model.shared.userAlbum.count > 0, let albumTitle = Model.shared.userAlbum[indexPath.row]["title"] as? String {
-            cell.title.text = albumTitle
+        if Model.shared.albums.count > 0 {
+            let theAlbum = Model.shared.albums[indexPath.row]
+            if let albumTitle = theAlbum.value(forKeyPath: "title") as? String {
+                cell.title.text = albumTitle
+            }
+            else {
+                cell.title.text = ""
+            }
         }
         else {
             cell.title.text = ""
@@ -254,7 +237,8 @@ extension ProfileViewController : UICollectionViewDelegate, UICollectionViewData
         photoImage.isHidden = false
         self.activitySpinner.startAnimating()
         
-        if let theAlbumId = Model.shared.userAlbum[0]["id"] as? Int {
+        
+        if let theAlbumId = Model.shared.albums[0].value(forKeyPath: "id") as? Int {
             
             Model.shared.updatePhotos( albumID: theAlbumId) { [unowned self] (updateResult, theError) in
                 
