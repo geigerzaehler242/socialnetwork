@@ -8,6 +8,10 @@
 
 import UIKit
 
+enum PanScrollDirection {
+    case left, right
+}
+
 class ProfileViewController: UIViewController {
 
     @IBOutlet weak var userImage: UIImageView!
@@ -34,6 +38,9 @@ class ProfileViewController: UIViewController {
     var tapGesture = UITapGestureRecognizer()
     var swipeGestureLeft = UISwipeGestureRecognizer()
     var swipeGestureRight = UISwipeGestureRecognizer()
+    
+    var panGesture = UIPanGestureRecognizer()
+    var gestureDirection: PanScrollDirection = .right
     
     var photoIndex = 0
     
@@ -105,12 +112,128 @@ class ProfileViewController: UIViewController {
         swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(myviewSwippedRight(_:)))
         swipeGestureRight.direction = .right
         shadeView.addGestureRecognizer(swipeGestureRight)
+        
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(myviewPanned(_:)))
+        innerFrame.addGestureRecognizer(panGesture)
     }
     
     @objc func myviewTapped(_ sender: UITapGestureRecognizer) {
         
         shadeView.isHidden = true
         photoImage.isHidden = true
+    }
+    
+    // MARK: Pan gesture
+    
+    @objc func myviewPanned(_ gesture: UIPanGestureRecognizer) {
+        
+        let velocity = gesture.velocity(in: innerFrame)
+        let percent = gesture.translation(in: innerFrame).x/250
+        var flipTransform3D = CATransform3DIdentity
+        flipTransform3D.m34 = -1.0 / 1000.0
+        
+        switch gesture.state {
+            
+        case .began:
+            
+            gestureDirection = velocity.x > 0 ? .right : .left
+            
+        case .changed:
+            
+            if gestureDirection == .right { // Flip right
+                
+                switch percent {
+                    
+                case 0.0..<1.0:
+                    flipTransform3D = CATransform3DRotate(flipTransform3D, CGFloat(-Double.pi) * percent, 0, 1, 0)
+                    innerFrame.layer.transform = flipTransform3D
+                    if percent >= 0.5 {
+                        //self.userImage.isHidden = true
+                        
+                    }
+                    else {
+                        //self.userImage.isHidden = false
+                        
+                    }
+                case 1.0...CGFloat(MAXFLOAT):
+                    flipTransform3D = CATransform3DRotate(flipTransform3D, CGFloat(-Double.pi), 0, 1, 0)
+                    innerFrame.layer.transform = flipTransform3D
+                default:
+                    print(percent)
+                }
+                
+            }
+            else { // Flip left
+                
+                switch percent {
+                    
+                case CGFloat(-MAXFLOAT)...(-1.0):
+                    innerFrame.layer.transform = CATransform3DIdentity
+                case -1.0...0:
+                    if percent <= -0.5 {
+                        //self.userImage.isHidden = false
+                    }
+                    else {
+                        //self.userImage.isHidden = true
+                    }
+                    flipTransform3D = CATransform3DRotate(flipTransform3D, CGFloat(-Double.pi) * (percent), 0, 1, 0)
+                    innerFrame.layer.transform = flipTransform3D
+                default:
+                    print(percent)
+                }
+            }
+            
+        case .ended:
+            
+            switch gestureDirection {
+                
+            case .right:
+                if percent >= 0.5 {
+                    
+                    flipTransform3D = CATransform3DRotate(flipTransform3D, CGFloat(Double.pi), 0, 1, 0)
+                    UIView.animate(withDuration: 0.3, animations: {
+                       
+                        self.innerFrame.layer.transform = flipTransform3D
+                    }, completion: {
+                        _ in
+
+                    })
+                }
+                else {
+                        let frontView = innerFrame! // cardArray[0]
+                        UIView.animate(withDuration: 0.2, animations: {
+                            frontView.layer.transform = CATransform3DIdentity
+                        })
+                }
+                
+            case .left:
+                
+                if percent <= -0.5 {
+
+                        UIView.animate(withDuration: 0.2, animations: {
+
+                            self.innerFrame.layer.transform = CATransform3DIdentity
+                        }, completion: {
+                            _ in
+
+                        })
+                }
+                else {
+                        UIView.animate(withDuration: 0.2, animations: {
+
+                            self.innerFrame.layer.transform = CATransform3DRotate(flipTransform3D, CGFloat(-Double.pi), 0, 1, 0)
+                        }, completion: {
+                            _ in
+
+                        })
+                }
+            }
+        case .cancelled:
+            gesture.isEnabled = true
+        default:
+            print("DEFAULT: DO NOTHING")
+        }
+
     }
     
     @objc func myviewSwippedRight(_ sender: UISwipeGestureRecognizer) {
@@ -192,7 +315,7 @@ extension ProfileViewController : UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        if Model.shared.albums.count == 0 || Model.shared.userAlbum.count == 0 {
+        if Model.shared.albums.count == 0 {
             return 0
         }
         else {
@@ -210,6 +333,7 @@ extension ProfileViewController : UICollectionViewDelegate, UICollectionViewData
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCollectionViewCell", for: indexPath) as! AlbumCollectionViewCell
         
         if Model.shared.albums.count > 0 {
+            
             let theAlbum = Model.shared.albums[indexPath.row]
             if let albumTitle = theAlbum.value(forKeyPath: "title") as? String {
                 cell.title.text = albumTitle
