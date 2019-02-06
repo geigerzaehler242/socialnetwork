@@ -66,9 +66,13 @@ class Model {
                                 let thePhone = aUser["phone"] as? String,
                                 let theWebsite = aUser["website"] as? String,
                                 let theAvatar = aUser["avatar"] as? [String:Any],
-                                let theImageUrl = theAvatar["medium"] as? String {
+                                let theImageUrl = theAvatar["medium"] as? String,
+                                let theCompany = aUser["company"] as? [String:Any],
+                                let theCompanyName = theCompany["name"] as? String,
+                                let theCompanyCatchPhrase = theCompany["catchPhrase"] as? String,
+                                let theCompanyBs = theCompany["bs"] as? String {
                             
-                                self.saveUser(id: theId, name: theName, email: theEmail, imageurl: theImageUrl, phone: thePhone, website: theWebsite)
+                                self.saveUser(id: theId, name: theName, email: theEmail, imageurl: theImageUrl, phone: thePhone, website: theWebsite, companyName: theCompanyName, companyCatchPhrase: theCompanyCatchPhrase, companyBs: theCompanyBs)
                             }
                             else {
                                print("Could not save user!")
@@ -134,6 +138,96 @@ class Model {
     
     
     //MARK: - Core Data
+    
+    func getUserCompanyBs(id: Int) -> String {
+        
+        var resultString = ""
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
+            else {
+                return resultString
+        }
+        
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Users")
+        fetchRequest.fetchLimit = 1
+        
+        let thePredicate = NSPredicate(format: "id == %@", argumentArray: [id])
+        fetchRequest.predicate = thePredicate
+        //fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "name", ascending: false)]
+        
+        do {
+            let result = try managedContext.fetch(fetchRequest)
+            for data in result {
+                resultString = data.value(forKey: "companyBs") as! String
+            }
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        
+        return resultString
+    }
+    
+    func getUserCompanyCatchPhrase(id: Int) -> String {
+        
+        var resultString = ""
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
+            else {
+                return resultString
+        }
+        
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Users")
+        fetchRequest.fetchLimit = 1
+        
+        let thePredicate = NSPredicate(format: "id == %@", argumentArray: [id])
+        fetchRequest.predicate = thePredicate
+        //fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "name", ascending: false)]
+        
+        do {
+            let result = try managedContext.fetch(fetchRequest)
+            for data in result {
+                resultString = data.value(forKey: "companyCatchPhrase") as! String
+            }
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        
+        return resultString
+    }
+    
+    func getUserCompanyName(id: Int) -> String {
+        
+        var resultString = ""
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
+            else {
+                return resultString
+        }
+        
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Users")
+        fetchRequest.fetchLimit = 1
+        
+        let thePredicate = NSPredicate(format: "id == %@", argumentArray: [id])
+        fetchRequest.predicate = thePredicate
+        //fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "name", ascending: false)]
+        
+        do {
+            let result = try managedContext.fetch(fetchRequest)
+            for data in result {
+                resultString = data.value(forKey: "companyName") as! String
+            }
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        
+        return resultString
+    }
     
     func getUserWebsite(id: Int) -> String {
         
@@ -392,7 +486,7 @@ class Model {
         }
     }
     
-    func saveUser(id: Int, name: String, email: String, imageurl: String, phone: String, website: String) {
+    func saveUser(id: Int, name: String, email: String, imageurl: String, phone: String, website: String, companyName: String, companyCatchPhrase: String, companyBs: String ) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
         else {
@@ -411,6 +505,9 @@ class Model {
         user.setValue(imageurl, forKeyPath: "imageurl")
         user.setValue(phone, forKeyPath: "phone")
         user.setValue(website, forKeyPath: "website")
+        user.setValue(companyName, forKeyPath: "companyName")
+        user.setValue(companyCatchPhrase, forKeyPath: "companyCatchPhrase")
+        user.setValue(companyBs, forKeyPath: "companyBs")
         
         do {
             try managedContext.save()

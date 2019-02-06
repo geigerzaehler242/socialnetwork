@@ -46,12 +46,14 @@ class ProfileViewController: UIViewController {
     
     var postIndex = 0
     
+    var innerFrameFront = true
+    
     var postUserId: Int = 0 {
         
         didSet {
             
             Model.shared.updateAlbum(userID: postUserId) { [unowned self] (imageResult, theError) in
-
+                
                 self.albumCollectionView.reloadData()
             }
         }
@@ -60,44 +62,14 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         
         navigationController?.visibleViewController?.title = "User Profile"
         
         innerFrame.layer.cornerRadius = 20
-            
-        let thePostUserImageURLString = Model.shared.getUserImageUrl(id: postUserId)
         
-        APIController.shared.fetchImage(url: URL(string: thePostUserImageURLString)! ){ [unowned self] (imageResult, theError) in
-            
-            if let theUserImage = imageResult as? UIImage {
-                
-                DispatchQueue.main.async {
-                    self.userImage.image = theUserImage.af_imageRoundedIntoCircle()
-                }
-            }
-            else {
-                self.userImage.image = nil //can set generic image in future
-            }
-        }
-            
-        let thePostUserName = Model.shared.getUserName(id: postUserId)
-        
-        userName.text = thePostUserName
-            
-        let thePostUserEmail = Model.shared.getUserEmail(id: postUserId)
-        
-        userEmail.text = thePostUserEmail
-            
-        let thePostUserPhone = Model.shared.getUserPhone(id: postUserId)
-        
-        userPhone.text = thePostUserPhone
-            
-        let thePostUserUrl = Model.shared.getUserWebsite(id: postUserId)
-     
-        userUrl.text = thePostUserUrl
-        
+        showFrontCard()
         
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(myviewTapped(_:)))
         tapGesture.numberOfTapsRequired = 1
@@ -123,12 +95,123 @@ class ProfileViewController: UIViewController {
         photoImage.isHidden = true
     }
     
+    func showBackCard() {
+        
+        self.innerFrameFront = false
+        
+        self.userImage.isHidden = true
+        
+        
+        let thePostUserCompanyName = Model.shared.getUserCompanyName(id: self.postUserId)
+        
+        DispatchQueue.main.async {
+            self.userName.text = thePostUserCompanyName
+        }
+        
+            let thePostUserCompanyCatchPhrase = Model.shared.getUserCompanyCatchPhrase(id: self.postUserId)
+        
+        DispatchQueue.main.async {
+            self.userEmail.text = thePostUserCompanyCatchPhrase
+        }
+        
+            let thePostUserCompanyBs = Model.shared.getUserCompanyBs(id: self.postUserId)
+        
+        DispatchQueue.main.async {
+            self.userPhone.text = thePostUserCompanyBs
+        }
+        
+        DispatchQueue.main.async {
+            self.userUrl.text = " "
+        }
+        
+        self.userName.alpha = 0
+        self.userEmail.alpha = 0
+        self.userPhone.alpha = 0
+        
+        UIView.animate(withDuration: 0.25, animations: {
+            
+            self.userName.alpha = 1
+            self.userEmail.alpha = 1
+            self.userPhone.alpha = 1
+            
+        }, completion: {
+            _ in
+            
+        })
+        
+    }
+    
+    
+    func showFrontCard() {
+        
+        self.innerFrameFront = true
+        
+        let thePostUserImageURLString = Model.shared.getUserImageUrl(id: postUserId)
+        
+        APIController.shared.fetchImage(url: URL(string: thePostUserImageURLString)! ){ [unowned self] (imageResult, theError) in
+            
+            self.userImage.isHidden = false
+            
+            if let theUserImage = imageResult as? UIImage {
+                
+                DispatchQueue.main.async {
+                    self.userImage.image = theUserImage.af_imageRoundedIntoCircle()
+                }
+            }
+            else {
+                self.userImage.image = nil //can set generic image in future
+            }
+        }
+        
+        let thePostUserName = Model.shared.getUserName(id: postUserId)
+        
+        DispatchQueue.main.async {
+            self.userName.text = thePostUserName
+        }
+        
+        let thePostUserEmail = Model.shared.getUserEmail(id: postUserId)
+        
+        DispatchQueue.main.async {
+            self.userEmail.text = thePostUserEmail
+        }
+        
+        let thePostUserPhone = Model.shared.getUserPhone(id: postUserId)
+        
+        DispatchQueue.main.async {
+            self.userPhone.text = thePostUserPhone
+        }
+        
+        let thePostUserUrl = Model.shared.getUserWebsite(id: postUserId)
+        
+        DispatchQueue.main.async {
+            self.userUrl.text = thePostUserUrl
+        }
+        
+        self.userName.alpha = 0
+        self.userEmail.alpha = 0
+        self.userPhone.alpha = 0
+        self.userUrl.alpha = 0
+        
+        UIView.animate(withDuration: 0.25, animations: {
+            
+            self.userName.alpha = 1
+            self.userEmail.alpha = 1
+            self.userPhone.alpha = 1
+            self.userUrl.alpha = 1
+            
+        }, completion: {
+            _ in
+            
+        })
+    }
+    
+    
     // MARK: Pan gesture
     
     @objc func myviewPanned(_ gesture: UIPanGestureRecognizer) {
         
         let velocity = gesture.velocity(in: innerFrame)
-        let percent = gesture.translation(in: innerFrame).x/250
+        let percent = gesture.translation(in: innerFrame).x / innerFrame.frame.width
         var flipTransform3D = CATransform3DIdentity
         flipTransform3D.m34 = -1.0 / 1000.0
         
@@ -144,22 +227,13 @@ class ProfileViewController: UIViewController {
                 
                 switch percent {
                     
-                case 0.0..<1.0:
-                    flipTransform3D = CATransform3DRotate(flipTransform3D, CGFloat(-Double.pi) * percent, 0, 1, 0)
+                case 0.0...0.5:
+                    flipTransform3D = CATransform3DRotate(flipTransform3D, CGFloat(Double.pi) * percent, 0, 1, 0)
                     innerFrame.layer.transform = flipTransform3D
-                    if percent >= 0.5 {
-                        //self.userImage.isHidden = true
-                        
-                    }
-                    else {
-                        //self.userImage.isHidden = false
-                        
-                    }
-                case 1.0...CGFloat(MAXFLOAT):
-                    flipTransform3D = CATransform3DRotate(flipTransform3D, CGFloat(-Double.pi), 0, 1, 0)
-                    innerFrame.layer.transform = flipTransform3D
+                    
                 default:
                     print(percent)
+                    
                 }
                 
             }
@@ -167,17 +241,10 @@ class ProfileViewController: UIViewController {
                 
                 switch percent {
                     
-                case CGFloat(-MAXFLOAT)...(-1.0):
-                    innerFrame.layer.transform = CATransform3DIdentity
-                case -1.0...0:
-                    if percent <= -0.5 {
-                        //self.userImage.isHidden = false
-                    }
-                    else {
-                        //self.userImage.isHidden = true
-                    }
-                    flipTransform3D = CATransform3DRotate(flipTransform3D, CGFloat(-Double.pi) * (percent), 0, 1, 0)
+                case -0.5...0.0:
+                    flipTransform3D = CATransform3DRotate(flipTransform3D, CGFloat(Double.pi) * percent, 0, 1, 0)
                     innerFrame.layer.transform = flipTransform3D
+                    
                 default:
                     print(percent)
                 }
@@ -192,40 +259,74 @@ class ProfileViewController: UIViewController {
                     
                     flipTransform3D = CATransform3DRotate(flipTransform3D, CGFloat(Double.pi), 0, 1, 0)
                     UIView.animate(withDuration: 0.3, animations: {
-                       
+                        
                         self.innerFrame.layer.transform = flipTransform3D
+                        
                     }, completion: {
                         _ in
-
+                        
+                        self.innerFrame.layer.transform = CATransform3DIdentity
+                        
+                        if self.innerFrameFront == false {
+                            self.showFrontCard()
+                        }
+                        else {
+                            self.showBackCard()
+                        }
                     })
                 }
                 else {
-                        let frontView = innerFrame! // cardArray[0]
-                        UIView.animate(withDuration: 0.2, animations: {
-                            frontView.layer.transform = CATransform3DIdentity
-                        })
+                    
+                    UIView.animate(withDuration: 0.2, animations: {
+                        
+                        self.innerFrame.layer.transform = CATransform3DIdentity
+                        
+                        if self.innerFrameFront == true {
+                            self.showFrontCard()
+                        }
+                        else {
+                            self.showBackCard()
+                        }
+                        
+                    })
                 }
                 
             case .left:
                 
                 if percent <= -0.5 {
-
-                        UIView.animate(withDuration: 0.2, animations: {
-
-                            self.innerFrame.layer.transform = CATransform3DIdentity
-                        }, completion: {
-                            _ in
-
-                        })
+                    
+                    flipTransform3D = CATransform3DRotate(flipTransform3D, CGFloat(Double.pi), 0, 1, 0)
+                    UIView.animate(withDuration: 0.3, animations: {
+                        
+                        self.innerFrame.layer.transform = flipTransform3D
+                        
+                    }, completion: {
+                        _ in
+                        
+                        self.innerFrame.layer.transform = CATransform3DIdentity
+                        
+                        if self.innerFrameFront == false {
+                            self.showFrontCard()
+                        }
+                        else {
+                            self.showBackCard()
+                        }
+                    })
                 }
                 else {
-                        UIView.animate(withDuration: 0.2, animations: {
-
-                            self.innerFrame.layer.transform = CATransform3DRotate(flipTransform3D, CGFloat(-Double.pi), 0, 1, 0)
-                        }, completion: {
-                            _ in
-
-                        })
+                    
+                    UIView.animate(withDuration: 0.2, animations: {
+                        
+                        self.innerFrame.layer.transform = CATransform3DIdentity
+                        
+                        if self.innerFrameFront == true {
+                            self.showFrontCard()
+                        }
+                        else {
+                            self.showBackCard()
+                        }
+                        
+                    })
                 }
             }
         case .cancelled:
@@ -233,8 +334,9 @@ class ProfileViewController: UIViewController {
         default:
             print("DEFAULT: DO NOTHING")
         }
-
+        
     }
+
     
     @objc func myviewSwippedRight(_ sender: UISwipeGestureRecognizer) {
         

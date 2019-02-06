@@ -12,6 +12,9 @@
         <attribute name="userId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="Users" representedClassName="Users" syncable="YES" codeGenerationType="class">
+        <attribute name="companyBs" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="companyCatchPhrase" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="companyName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="imageurl" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,8 +23,8 @@
         <attribute name="website" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Users" positionX="-63" positionY="-18" width="128" height="135"/>
+        <element name="Users" positionX="-228.72265625" positionY="-102.59765625" width="128" height="178"/>
         <element name="Posts" positionX="-54" positionY="36" width="128" height="105"/>
-        <element name="Albums" positionX="-36" positionY="54" width="128" height="90"/>
+        <element name="Albums" positionX="-56.26171875" positionY="-98.9140625" width="128" height="90"/>
     </elements>
 </model>
