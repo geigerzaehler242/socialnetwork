@@ -19,4 +19,8 @@ carthage update
 
 3) deviations to the design
 
+a)
 since the API doesn't seem to allow to download only one photo from an album a deviation was made in the design to just show album title on the cell instead of a photo. Otherwise downloading full photo collections to just show the first photo image on each cell is a potential huge bandwidth issue.a proper solution is for the api to allow for downloading jsut one image per call.
+
+b)
+i added the ability to swipe left/right on the photo to traverse the album photos when a user opens an album
