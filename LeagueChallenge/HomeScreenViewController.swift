@@ -58,7 +58,7 @@ class HomeScreenViewController: UIViewController {
         
         if isNetworkReachable() {
         
-            Model.shared.updateModel() { (result, theError) in
+            Model.shared.updateModel() { [unowned self] (result, theError) in
              
                 self.activitySpinner.stopAnimating()
                 self.refreshControl.endRefreshing()

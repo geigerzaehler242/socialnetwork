@@ -108,13 +108,13 @@ class ProfileViewController: UIViewController {
             self.userName.text = thePostUserCompanyName
         }
         
-            let thePostUserCompanyCatchPhrase = Model.shared.getUserCompanyCatchPhrase(id: self.postUserId)
+        let thePostUserCompanyCatchPhrase = Model.shared.getUserCompanyCatchPhrase(id: self.postUserId)
         
         DispatchQueue.main.async {
             self.userEmail.text = thePostUserCompanyCatchPhrase
         }
         
-            let thePostUserCompanyBs = Model.shared.getUserCompanyBs(id: self.postUserId)
+        let thePostUserCompanyBs = Model.shared.getUserCompanyBs(id: self.postUserId)
         
         DispatchQueue.main.async {
             self.userPhone.text = thePostUserCompanyBs
